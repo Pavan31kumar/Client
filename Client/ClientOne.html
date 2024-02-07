@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <!--first installed jquery into your application-->
+    <script src="Scripts/jquery-3.7.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ulEmployees = $('ulEmployees');
+            $('#btnGetData').click(function () {
+                //Get the username and password from the textboxes
+                var username = $('#txtUsername').val();
+                var password = $('#txtPassword').val();
+                $.ajax(
+                    {
+                        type:'GET',
+                        //make sure to change port number to
+                        //where you have the service
+                        //running on your local server
+                        url: 'http://localhost:58803/api/Employees',
+                        datatype: 'json',
+                        //specify the authentication header
+                        //boat()method encodes string to base64
+                        headers: {
+                            'Authorization': 'Basic' + btoa(username + ':' + password)
+                        },
+                        success: function (data) {
+                            ulEmployees.empty();
+                            $.each(data, function (index, val) {
+                                var EmployeeDetails = 'Name=' + val.Name + 'Gender=' + val.Gender + 'Dptm=' + val.Dptm + 'Salary=' + val.Salary;
+                                ulEmployees.append('<li>' + EmployeeDetails + '</li>')
+
+
+                            });
+                        },
+                        complet: function (jqXHR) {
+                            if (jqXHR.Status == '401') {
+                                ulEmployees.empty();
+                                ulEmployees.append('<li style="color:red">' + jqXHR.StatusText + '</li>')
+                            }
+                        }
+                    });
+            });
+         $('#btnClear').click(function () {
+            ulEmployees.empty();
+        });
+        });        
+    </script>
+</head>
+<body>
+    Username :<input type="text" id="txtUsername"/>
+    Password:<input type="text"id="txtPassword"/>
+    <br /><br />
+    <input id="btnGetData" type="button"value=" Get Employees" />
+    <input id="btnClear" type="button"value="Clear" />
+    <ul id="ulEmployees"></ul>
+
+</body>
+</html>
