@@ -19,9 +19,9 @@
                         //where you have the service
                         //running on your local server
                         url: 'http://localhost:58803/api/Employees',
-                        datatype: 'json',
+                        dataType: 'json',
                         //specify the authentication header
-                        //boat()method encodes string to base64
+                        //btoa()method encodes a string to base64
                         headers: {
                             'Authorization': 'Basic' + btoa(username + ':' + password)
                         },
@@ -37,7 +37,7 @@
                         complet: function (jqXHR) {
                             if (jqXHR.Status == '401') {
                                 ulEmployees.empty();
-                                ulEmployees.append('<li style="color:red">' + jqXHR.StatusText + '</li>')
+                                ulEmployees.append('<li style="color:red">'+jqXHR.status+: + jqXHR.statusText + '</li>')
                             }
                         }
                     });
@@ -50,7 +50,7 @@
 </head>
 <body>
     Username :<input type="text" id="txtUsername"/>
-    Password:<input type="text"id="txtPassword"/>
+    Password:<input type="password"id="txtPassword"/>
     <br /><br />
     <input id="btnGetData" type="button"value=" Get Employees" />
     <input id="btnClear" type="button"value="Clear" />
